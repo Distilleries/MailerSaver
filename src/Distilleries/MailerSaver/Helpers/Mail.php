@@ -31,7 +31,6 @@ class Mail extends Mailer {
         $body            = $this->model->getTemplate($view);
         $data['subject'] = $this->model->getSubject();
 
-
         $body = StringView::make(
             array(
                 'template'   => $body,
