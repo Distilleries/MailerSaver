@@ -177,7 +177,7 @@ php artisan config:publish distilleries/mailersaver
                 'enabled' => false,
                 'to'      => [''],
                 'cc'      => [''],
-                ''     => ['']
+                'bcc'     => ['']
             ]
         ],
     ];
