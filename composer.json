@@ -1,0 +1,29 @@
+{
+    "name": "distilleries/mailersaver",
+    "description": "Override helper Mailer from laravel to hock the sender",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maxime Francois",
+            "email": "kezho@me.com"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.5.0",
+        "illuminate/support": "4.*",
+        "illuminate/database": "4.*",
+        "illuminate/view": "4.*",
+        "illuminate/mail": "4.*",
+        "illuminate/filesystem": "4.*",
+        "wpb/string-blade-compiler": "1.*@dev"
+    },
+    "autoload": {
+        "classmap": [
+        ],
+        "psr-4": {
+            "Distilleries\\MailerSaver\\": "src/Distilleries/MailerSaver"
+        }
+    },
+    "minimum-stability": "stable"
+}
