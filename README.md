@@ -1,4 +1,4 @@
-#Mailer saver
+#Laravel 4 Mailer saver
 Mailer saver extend the laravel 4 mailer.
 
 * Add the possibility to override the to,cc,bcc of your mail without modify your implementation.
@@ -6,8 +6,14 @@ Mailer saver extend the laravel 4 mailer.
 
 
 
-##Installation
+## Table of contents
+1. [Installation](#installation)
+2. [Config file](#config-file)
+3. [View](#view)
+4. [Send an email](#send-an-email)
 
+
+##Installation
 
 Add on your composer.json
 
