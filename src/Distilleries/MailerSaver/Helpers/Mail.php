@@ -6,7 +6,7 @@ namespace Distilleries\MailerSaver\Helpers;
 use Illuminate\Config\Repository;
 use Illuminate\Mail\Mailer;
 use Swift_Mailer;
-use \StringView;
+use Wpb\StringBladeCompiler\StringView;
 use Distilleries\MailerSaver\Contracts\MailModelContract;
 use Illuminate\View\Factory;
 use Illuminate\Events\Dispatcher;
@@ -28,10 +28,13 @@ class Mail extends Mailer {
 
     protected function getView($view, $data)
     {
+
         $body            = $this->model->getTemplate($view);
+        $body            = (empty($body)) ? $this->views->make($view, $data)->render() : $body;
         $data['subject'] = $this->model->getSubject();
 
-        $body = StringView::make(
+        $stringView = new StringView;
+        $body = $stringView->make(
             array(
                 'template'   => $body,
                 'cache_key'  => uniqid(),
@@ -41,19 +44,23 @@ class Mail extends Mailer {
         );
 
         $data['body_mail'] = $body;
-        $config = $this->config->get('mailersaver::mail');
+        $config            = $this->config->get('mailersaver.mail');
+
         return $this->views->make($config['template'], $data)->render();
     }
 
     public function send($view, array $data, $callback)
     {
 
+
         // First we need to parse the view, which could either be a string or an array
         // containing both an HTML and plain text versions of the view which should
         // be used when sending an e-mail. We will extract both of them out here.
-        list($view, $plain) = $this->parseView($view);
+        list($view, $plain, $raw) = $this->parseView($view);
 
-        $this->model = $this->model->initByTemplate($view);
+        $model    = $this->model->initByTemplate($view);
+        $template = $model->get()->last();
+        $plain    = (!empty($template)) ? $template->getPlain() : $plain;
 
         $data['message'] = $message = $this->createMessage();
 
@@ -62,7 +69,7 @@ class Mail extends Mailer {
         // Once we have retrieved the view content for the e-mail we will set the body
         // of this message using the HTML type, which will provide a simple wrapper
         // to creating view based emails that are able to receive arrays of data.
-        $this->addContent($message, $view, $this->model->getPlain(), $data);
+        $this->addContent($message, $view, $plain, $raw, $data);
         $this->addSubject($message);
         $this->addBcc($message);
         $this->addCc($message);
@@ -111,7 +118,7 @@ class Mail extends Mailer {
 
     public function isOveride()
     {
-        $config = $this->config->get('mailersaver::mail');
+        $config         = $this->config->get('mailersaver.mail');
         $this->override = $config['override'];
 
         return $this->override['enabled'];

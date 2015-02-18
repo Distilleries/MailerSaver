@@ -11,12 +11,12 @@
 
     "require": {
         "php": ">=5.5.0",
-        "illuminate/support": "4.*",
-        "illuminate/database": "4.*",
-        "illuminate/view": "4.*",
-        "illuminate/mail": "4.*",
-        "illuminate/filesystem": "4.*",
-        "wpb/string-blade-compiler": "1.*@dev"
+        "illuminate/support": "5.0.*",
+        "illuminate/database": "5.0.*",
+        "illuminate/view": "5.0.*",
+        "illuminate/mail": "5.0.*",
+        "illuminate/filesystem": "5.0.*",
+        "wpb/string-blade-compiler": "2.0.0"
     },
     "autoload": {
         "classmap": [

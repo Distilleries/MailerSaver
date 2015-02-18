@@ -19,7 +19,27 @@ class MailerSaverServiceProvider extends \Illuminate\Mail\MailServiceProvider {
      */
     public function boot()
     {
-        $this->package('distilleries/mailersaver');
+        $this->loadViewsFrom(__DIR__ . '/../../views', 'mailersaver');
+
+        $this->publishes([
+            __DIR__ . '/../../views' => base_path('resources/views/distilleries/mailersaver'),
+            __DIR__ . '/../../config/config.php'    => config_path('mailersaver.php'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/../../models/Email.php'     => base_path('app/Email.php'),
+        ],'models');
+
+
+        $this->publishes([
+            __DIR__.'/../../database/migrations/' => base_path('/database/migrations')
+        ], 'migrations');
+
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/config.php', 'mailersaver'
+        );
+
     }
 
     public function register()
