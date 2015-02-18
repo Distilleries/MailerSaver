@@ -630,8 +630,8 @@ Chrome and other few mail clients do not support <style> tag so the above conver
 								<table class="six columns">
 								<tr>
 									<td class="vertical-middle">
-										<a href="{{ URL::to('/'); }}">
-										  <img src="{{ asset('assets/admin/img/logo.jpg'); }}" alt="" height="24" />
+										<a href="{{ URL::to('/') }}">
+										  <img src="{{ asset('assets/admin/img/logo.jpg') }}" alt="" height="24" />
 										</a>
 									</td>
 								</tr>
@@ -669,7 +669,7 @@ Chrome and other few mail clients do not support <style> tag so the above conver
 						<table class="twelve columns">
 						<tr>
 							<td>
-								{{ $body_mail }}
+                                {!! $body_mail !!}}
 							</td>
 							<td class="expander">
 							</td>
@@ -695,7 +695,7 @@ Chrome and other few mail clients do not support <style> tag so the above conver
 						<tr>
 							<td class="wrapper last">
 								<span style="font-size:12px;">
-								    <i>{{ _('This ia a system generated email and reply is not required.') }}</i>
+								    <i>{{ 'This ia a system generated email and reply is not required.' }}</i>
 								</span>
 							</td>
 						</tr>
