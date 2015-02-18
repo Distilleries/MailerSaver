@@ -6,9 +6,9 @@ return [
         'template' => 'mailersaver::admin.templates.mails.default',
         'override' => [
             'enabled' => false,
-            'to'      => [''],
-            'cc'      => [''],
-            'bcc'     => ['']
+            'to'      => [],
+            'cc'      => [],
+            'bcc'     => []
         ]
     ],
 ];

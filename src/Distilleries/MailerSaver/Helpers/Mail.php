@@ -29,12 +29,13 @@ class Mail extends Mailer {
     protected function getView($view, $data)
     {
 
+
         $body            = $this->model->getTemplate($view);
         $body            = (empty($body)) ? $this->views->make($view, $data)->render() : $body;
         $data['subject'] = $this->model->getSubject();
 
         $stringView = new StringView;
-        $body = $stringView->make(
+        $body       = $stringView->make(
             array(
                 'template'   => $body,
                 'cache_key'  => uniqid(),
@@ -58,9 +59,11 @@ class Mail extends Mailer {
         // be used when sending an e-mail. We will extract both of them out here.
         list($view, $plain, $raw) = $this->parseView($view);
 
+
         $model    = $this->model->initByTemplate($view);
         $template = $model->get()->last();
         $plain    = (!empty($template)) ? $template->getPlain() : $plain;
+
 
         $data['message'] = $message = $this->createMessage();
 
@@ -85,7 +88,7 @@ class Mail extends Mailer {
     public function addCc($message)
     {
 
-        $cc = ($this->isOveride()) ? $this->override['cc'] : $this->model->getCc();
+        $cc = ($this->isOveride()) ? $this->override['cc'] : (!empty($this->model) ? $this->model->getCc() : '');
 
         if (!empty($cc))
         {

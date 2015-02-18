@@ -16,7 +16,7 @@ class Email extends Model implements \Distilleries\MailerSaver\Contracts\MailMod
 
     public function initByTemplate($view)
     {
-        return $this->where('action', '=', $view)->get()->last();
+        return $this->where('action', '=', $view);
     }
 
     public function getTemplate($view)
