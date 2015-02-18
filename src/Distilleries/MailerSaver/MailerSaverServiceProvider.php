@@ -26,7 +26,7 @@ class MailerSaverServiceProvider extends \Illuminate\Mail\MailServiceProvider {
         ]);
 
         $this->publishes([
-            __DIR__ . '/../../views' => base_path('resources/views/vendor/distilleries/mailersaver'),
+            __DIR__ . '/../../views' => base_path('resources/views/vendor/mailersaver'),
         ], 'views');
 
         $this->publishes([
