@@ -1,7 +1,4 @@
-<?php
-
-
-namespace Distilleries\MailerSaver\Helpers;
+<?php namespace Distilleries\MailerSaver\Helpers;
 
 use Illuminate\Config\Repository;
 use Illuminate\Mail\Mailer;
@@ -10,7 +7,6 @@ use Wpb\StringBladeCompiler\StringView;
 use Distilleries\MailerSaver\Contracts\MailModelContract;
 use Illuminate\View\Factory;
 use Illuminate\Events\Dispatcher;
-
 
 class Mail extends Mailer {
 
@@ -26,10 +22,15 @@ class Mail extends Mailer {
 
     }
 
+    /**
+     * Render the given view.
+     *
+     * @param  string $view
+     * @param  array $data
+     * @return \Illuminate\View\View
+     */
     protected function getView($view, $data)
     {
-
-
         $body            = $this->model->getTemplate($view);
         $body            = (empty($body)) ? $this->views->make($view, $data)->render() : $body;
         $data['subject'] = $this->model->getSubject();
@@ -84,7 +85,9 @@ class Mail extends Mailer {
 
     }
 
-
+    /**
+     * @param \Illuminate\Mail\Message $message
+     */
     public function addCc($message)
     {
 
@@ -97,6 +100,9 @@ class Mail extends Mailer {
 
     }
 
+    /**
+     * @param \Illuminate\Mail\Message $message
+     */
     public function addBcc($message)
     {
         $bcc = ($this->isOveride()) ? $this->override['bcc'] : $this->model->getBcc();
@@ -108,6 +114,9 @@ class Mail extends Mailer {
 
     }
 
+    /**
+     * @param \Illuminate\Mail\Message $message
+     */
     public function addSubject($message)
     {
         $subject = $this->model->getSubject();
@@ -127,6 +136,9 @@ class Mail extends Mailer {
         return $this->override['enabled'];
     }
 
+    /**
+     * @param \Illuminate\Mail\Message $message
+     */
     public function overideTo($message)
     {
         $to = ($this->isOveride()) ? $this->override['to'] : '';
@@ -135,4 +147,5 @@ class Mail extends Mailer {
             $message->setTo($to);
         }
     }
+
 } 

@@ -1,12 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: mfrancois
- * Date: 30/01/2015
- * Time: 10:02 AM
- */
-
-namespace Distilleries\MailerSaver\Contracts;
+<?php namespace Distilleries\MailerSaver\Contracts;
 
 
 interface MailModelContract {
@@ -22,4 +14,5 @@ interface MailModelContract {
     public function getCc();
 
     public function getPlain();
-} 
+
+}

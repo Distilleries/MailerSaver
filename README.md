@@ -1,3 +1,9 @@
+[![Code quality](http://img.shields.io/scrutinizer/g/distilleries/mailersaver.svg?style=flat)](https://scrutinizer-ci.com/g/kristijanhusak/laravel-form-builder/?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/distilleries/mailersaver.svg?style=flat)](https://packagist.org/packages/distilleries/mailersaver)
+[![Latest Stable Version](https://img.shields.io/packagist/v/distilleries/mailersaver.svg?style=flat)](https://packagist.org/packages/distilleries/mailersaver)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
+
+
 #Laravel 5 Mailer saver
 Mailer saver extend the laravel 5 mailer.
 

@@ -1,7 +1,4 @@
-<?php
-
-
-namespace Distilleries\MailerSaver\Facades;
+<?php namespace Distilleries\MailerSaver\Facades;
 
 
 use Illuminate\Support\Facades\Facade;
@@ -17,4 +14,5 @@ class Mail extends Facade {
     {
         return 'mailer';
     }
+
 } 

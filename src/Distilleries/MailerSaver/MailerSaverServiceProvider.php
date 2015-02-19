@@ -50,7 +50,7 @@ class MailerSaverServiceProvider extends \Illuminate\Mail\MailServiceProvider {
 
 
         $me = $this;
-        $this->app->bindShared('mailer', function ($app) use ($me)
+        $this->app->bindShared('mailer', function($app) use ($me)
         {
             $me->registerSwiftMailer();
 
@@ -84,8 +84,6 @@ class MailerSaverServiceProvider extends \Illuminate\Mail\MailServiceProvider {
             return $mailer;
         });
 
-
     }
-
 
 }
