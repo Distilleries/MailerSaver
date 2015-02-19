@@ -13,7 +13,7 @@ class CreateEmailsTable extends Migration {
      */
     public function up()
     {
-        Schema::create('emails', function (Blueprint $table)
+        Schema::create('emails', function(Blueprint $table)
         {
             $table->increments('id');
             $table->string('libelle');
@@ -39,5 +39,4 @@ class CreateEmailsTable extends Migration {
     {
         Schema::drop('emails');
     }
-
 }

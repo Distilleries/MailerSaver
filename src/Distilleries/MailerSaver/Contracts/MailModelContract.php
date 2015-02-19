@@ -1,6 +1,5 @@
 <?php namespace Distilleries\MailerSaver\Contracts;
 
-
 interface MailModelContract {
 
     public function initByTemplate($view);
@@ -14,5 +13,4 @@ interface MailModelContract {
     public function getCc();
 
     public function getPlain();
-
 }

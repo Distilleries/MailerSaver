@@ -83,7 +83,5 @@ class MailerSaverServiceProvider extends \Illuminate\Mail\MailServiceProvider {
 
             return $mailer;
         });
-
     }
-
 }

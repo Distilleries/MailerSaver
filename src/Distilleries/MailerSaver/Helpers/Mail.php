@@ -27,7 +27,7 @@ class Mail extends Mailer {
      *
      * @param  string $view
      * @param  array $data
-     * @return \Illuminate\View\View
+     * @return string
      */
     protected function getView($view, $data)
     {
