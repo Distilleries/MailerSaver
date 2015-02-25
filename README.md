@@ -125,7 +125,7 @@ php artisan vendor:publish --provider="Distilleries\MailerSaver\MailerSaverServi
 
 
 ##Send an email
-It's exactly the same of laravel mailer.
+It's exactly the same than the laravel mailer.
 
 Example:
 
