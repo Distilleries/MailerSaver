@@ -6,5 +6,14 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'XdgBaseDir\\' => array($vendorDir . '/dnoegel/php-xdg-base-dir/src'),
+    'SuperClosure\\' => array($vendorDir . '/jeremeamia/SuperClosure/src'),
+    'Stringy\\' => array($vendorDir . '/danielstjules/stringy/src'),
+    'Orchestra\\Testbench\\' => array($vendorDir . '/orchestra/testbench/src'),
+    'Orchestra\\Database\\' => array($vendorDir . '/orchestra/database'),
+    'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
+    'Illuminate\\' => array($vendorDir . '/laravel/framework/src/Illuminate'),
     'Distilleries\\MailerSaver\\' => array($baseDir . '/src/Distilleries/MailerSaver'),
+    'ClassPreloader\\' => array($vendorDir . '/classpreloader/classpreloader/src'),
 );
