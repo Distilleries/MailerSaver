@@ -137,3 +137,7 @@ Mail::send('emails.welcome', array('key' => 'value'), function($message)
 ```
 
 If the override is set to true email is send to another `to` email address.
+
+##Troubleshooting
+
+If composer update --require-dev refuse to install, remove illuminate/* from vendor before the install or just remove vendor and start fresh.
