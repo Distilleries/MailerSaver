@@ -78,7 +78,7 @@ class MailTest extends \Orchestra\Testbench\TestCase {
 
         $logger = m::mock('Psr\Log\LoggerInterface');
         $logger->shouldReceive('info')->twice()->with('Pretending to mail message to: foo@example.com');
-        
+
         \Mail::setLogger($logger);
         \Mail::pretend();
 
