@@ -1,4 +1,5 @@
-[![Code quality](http://img.shields.io/scrutinizer/g/distilleries/mailersaver.svg?style=flat)](https://scrutinizer-ci.com/g/kristijanhusak/laravel-form-builder/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Distilleries/MailerSaver/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Distilleries/MailerSaver/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/Distilleries/MailerSaver/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Distilleries/MailerSaver/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/distilleries/mailersaver.svg?style=flat)](https://packagist.org/packages/distilleries/mailersaver)
 [![Latest Stable Version](https://img.shields.io/packagist/v/distilleries/mailersaver.svg?style=flat)](https://packagist.org/packages/distilleries/mailersaver)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
@@ -125,7 +126,7 @@ php artisan vendor:publish --provider="Distilleries\MailerSaver\MailerSaverServi
 
 
 ##Send an email
-It's exactly the same of laravel mailer.
+It's exactly the same than the laravel mailer.
 
 Example:
 
@@ -137,3 +138,7 @@ Mail::send('emails.welcome', array('key' => 'value'), function($message)
 ```
 
 If the override is set to true email is send to another `to` email address.
+
+##Troubleshooting
+
+If composer update --require-dev refuse to install, remove illuminate/* from vendor before the install or just remove vendor and start fresh.

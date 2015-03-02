@@ -18,6 +18,7 @@
         "illuminate/filesystem": "5.0.*",
         "wpb/string-blade-compiler": "2.0.0"
     },
+
     "autoload": {
         "classmap": [
         ],
@@ -25,5 +26,11 @@
             "Distilleries\\MailerSaver\\": "src/Distilleries/MailerSaver"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "require-dev": {
+        "orchestra/testbench": "3.0.*",
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "~4.5",
+        "orchestra/database": "~3.0"
+    }
 }
