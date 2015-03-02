@@ -65,6 +65,10 @@ class Mail extends Mailer {
         $template = $model->get()->last();
         $plain    = (!empty($template)) ? $template->getPlain() : $plain;
 
+        if(!empty($template))
+        {
+            $this->model = $template;
+        }
 
         $data['message'] = $message = $this->createMessage();
 
