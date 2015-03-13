@@ -42,6 +42,8 @@ class Mail extends Mailer {
         );
 
 
+        $data['subject']   = $subject->render();
+
         $body = StringView::make(
             array(
                 'template'   => $body,
@@ -52,7 +54,6 @@ class Mail extends Mailer {
         );
 
         $data['body_mail'] = $body;
-        $data['subject']   = $subject;
 
 
         $config = $this->config->get('mailersaver::mail');
