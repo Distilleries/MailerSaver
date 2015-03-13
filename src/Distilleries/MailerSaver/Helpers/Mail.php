@@ -29,7 +29,18 @@ class Mail extends Mailer {
     protected function getView($view, $data)
     {
         $body            = $this->model->getTemplate($view);
-        $data['subject'] = $this->model->getSubject();
+        $subject         = $this->model->getSubject();
+
+
+        $subject = StringView::make(
+            array(
+                'template'   => $subject,
+                'cache_key'  => uniqid().rand(),
+                'updated_at' => 0
+            ),
+            $data
+        );
+
 
         $body = StringView::make(
             array(
@@ -41,6 +52,9 @@ class Mail extends Mailer {
         );
 
         $data['body_mail'] = $body;
+        $data['subject']   = $subject;
+
+
         $config = $this->config->get('mailersaver::mail');
         return $this->views->make($config['template'], $data)->render();
     }
@@ -63,7 +77,7 @@ class Mail extends Mailer {
         // of this message using the HTML type, which will provide a simple wrapper
         // to creating view based emails that are able to receive arrays of data.
         $this->addContent($message, $view, $this->model->getPlain(), $data);
-        $this->addSubject($message);
+        $this->addSubject($message, $data);
         $this->addBcc($message);
         $this->addCc($message);
         $this->overideTo($message);
@@ -98,13 +112,22 @@ class Mail extends Mailer {
 
     }
 
-    public function addSubject($message)
+    public function addSubject($message, $data)
     {
         $subject = $this->model->getSubject();
 
         if (!empty($subject))
         {
-            $message->setSubject($subject);
+            $subject = StringView::make(
+                array(
+                    'template'   => $subject,
+                    'cache_key'  => uniqid().rand(),
+                    'updated_at' => 0
+                ),
+                $data
+            );
+
+            $message->setSubject($subject->render());
         }
 
     }

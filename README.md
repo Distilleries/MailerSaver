@@ -50,7 +50,7 @@ You need to provide a model of data, simply add on your register method a new in
     public function register()
 	{
 
-		$this->app->singleton('Distilleries\MailerSaver\Contracts\MailModelContract', function ($app)
+		$this->app->bindShared('Distilleries\MailerSaver\Contracts\MailModelContract', function ($app)
 		{
 			return new \Email;
 		});
