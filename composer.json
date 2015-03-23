@@ -1,6 +1,6 @@
 {
     "name": "distilleries/mailersaver",
-    "description": "Override helper Mailer from laravel to hock the sender",
+    "description": "Mailer saver extend the laravel 5 mailer. Add the possibility to override the to,cc,bcc of your mail without modify your implementation. Add the possibility to get your template mail, subject, cc, bcc and type from a model.",
     "license": "MIT",
     "authors": [
         {
