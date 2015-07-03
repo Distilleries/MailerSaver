@@ -16,7 +16,7 @@ class Mail extends Mailer {
 
     public function __construct(MailModelContract $model, Repository $config, Factory $views, Swift_Mailer $swift, Dispatcher $events = null)
     {
-        $this->model  = $model;
+        $this->model = $model;
         $this->config = $config;
         parent::__construct($views, $swift, $events);
 
@@ -31,12 +31,31 @@ class Mail extends Mailer {
      */
     protected function getView($view, $data)
     {
-        $body            = $this->model->getTemplate($view);
-        $body            = (empty($body)) ? $this->views->make($view, $data)->render() : $body;
-        $data['subject'] = $this->model->getSubject();
-
+        $body = $this->model->getTemplate($view);
+        $body = (empty($body)) ? $this->views->make($view, $data)->render() : $body;
         $stringView = new StringView;
-        $body       = $stringView->make(
+
+        $subject_template = $this->model->getSubject();
+
+        if (!empty($subject_template))
+        {
+            $subject = $stringView->make(
+                array(
+                    'template'   => $subject_template,
+                    'cache_key'  => uniqid() . rand(),
+                    'updated_at' => 0
+                ),
+                $data
+            );
+
+            $data['subject'] = $subject->render();
+        } else
+        {
+            $data['subject'] = $subject_template;
+        }
+
+
+        $body = $stringView->make(
             array(
                 'template'   => $body,
                 'cache_key'  => uniqid(),
@@ -46,7 +65,7 @@ class Mail extends Mailer {
         );
 
         $data['body_mail'] = $body;
-        $config            = $this->config->get('mailersaver.mail');
+        $config = $this->config->get('mailersaver.mail');
 
         return $this->views->make($config['template'], $data)->render();
     }
@@ -61,9 +80,9 @@ class Mail extends Mailer {
         list($view, $plain, $raw) = $this->parseView($view);
 
 
-        $model    = $this->model->initByTemplate($view);
+        $model = $this->model->initByTemplate($view);
         $template = $model->get()->last();
-        $plain    = (!empty($template)) ? $template->getPlain() : $plain;
+        $plain = (!empty($template)) ? $template->getPlain() : $plain;
 
         if (!empty($template))
         {
@@ -134,7 +153,7 @@ class Mail extends Mailer {
 
     public function isOveride()
     {
-        $config         = $this->config->get('mailersaver.mail');
+        $config = $this->config->get('mailersaver.mail');
         $this->override = $config['override'];
 
         return $this->override['enabled'];
