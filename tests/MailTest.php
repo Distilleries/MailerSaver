@@ -19,6 +19,8 @@ class MailTest extends \Orchestra\Testbench\TestCase {
 
         parent::setUp();
 
+        $this->artisan('key:generate');
+
         $this->app->singleton('Distilleries\MailerSaver\Contracts\MailModelContract', function ($app)
         {
             return new \App\Email;
