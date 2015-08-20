@@ -1,9 +1,10 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Distilleries/MailerSaver/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Distilleries/MailerSaver/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/Distilleries/MailerSaver/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Distilleries/MailerSaver/?branch=master)
 [![Build Status](https://travis-ci.org/Distilleries/MailerSaver.svg?branch=master)](https://travis-ci.org/Distilleries/MailerSaver)
-[![Total Downloads](https://img.shields.io/packagist/dt/distilleries/mailersaver.svg?style=flat)](https://packagist.org/packages/distilleries/mailersaver)
-[![Latest Stable Version](https://img.shields.io/packagist/v/distilleries/mailersaver.svg?style=flat)](https://packagist.org/packages/distilleries/mailersaver)
+[![Total Downloads](https://poser.pugx.org/distilleries/mailersaver/downloads)](https://packagist.org/packages/distilleries/mailersaver)
+[![Latest Stable Version](https://poser.pugx.org/distilleries/mailersaver/version)](https://packagist.org/packages/distilleries/mailersaver)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
+
 
 
 #Laravel 5 Mailer saver
