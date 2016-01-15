@@ -79,7 +79,7 @@ class Mail extends Mailer {
 
 
         $model = $this->model->initByTemplate($view);
-        $template = $model->get()->last();
+        $template = $model->where('action',$view)->get()->last();
         $plain = (!empty($template)) ? $template->getPlain() : $plain;
 
         if (!empty($template))
