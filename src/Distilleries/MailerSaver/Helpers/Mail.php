@@ -3,9 +3,8 @@
 use Illuminate\Config\Repository;
 use Illuminate\Mail\Mailer;
 use Swift_Mailer;
-use Wpb\StringBladeCompiler\StringView;
 use Distilleries\MailerSaver\Contracts\MailModelContract;
-use Illuminate\View\Factory;
+use Wpb\String_Blade_Compiler\Factory;
 use Illuminate\Events\Dispatcher;
 
 class Mail extends Mailer {
@@ -33,13 +32,12 @@ class Mail extends Mailer {
     {
         $body = $this->model->getTemplate($view);
         $body = (empty($body)) ? $this->views->make($view, $data)->render() : $body;
-        $stringView = new StringView;
 
         $subject_template = $this->model->getSubject();
 
         if (!empty($subject_template))
         {
-            $subject = $stringView->make(
+            $subject = view(
                 array(
                     'template'   => $subject_template,
                     'cache_key'  => uniqid() . rand(),
@@ -55,7 +53,7 @@ class Mail extends Mailer {
         }
 
 
-        $body = $stringView->make(
+        $body = view(
             array(
                 'template'   => $body,
                 'cache_key'  => uniqid(),
