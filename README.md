@@ -39,7 +39,8 @@ Add Service provider to `config/app.php`:
 ``` php
     'providers' => [
         // ...
-       'Distilleries\MailerSaver\MailerSaverServiceProvider',
+       Distilleries\MailerSaver\MailerSaverServiceProvider::class,
+       Wpb\String_Blade_Compiler\ViewServiceProvider::class
     ]
 ```
 
