@@ -68,7 +68,7 @@ class Mail extends Mailer {
         return $this->views->make($config['template'], $data)->render();
     }
 
-    public function send($view, array $data, $callback)
+    public function send($view, array $data = [], $callback = null)
     {
 
 
