@@ -92,7 +92,7 @@ class MailTest extends TestCase
             'template' => 'mailersaver::default',
             'override' => [
                 'enabled' => true,
-                'to' => ['test@test'],
+                'to' => 'test@test',
                 'cc' => [],
                 'bcc' => [],
             ],

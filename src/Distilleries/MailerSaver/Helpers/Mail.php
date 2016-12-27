@@ -169,7 +169,7 @@ class Mail extends Mailer
      */
     public function overrideTo($message)
     {
-        $to = $this->isOverride() ? $this->override['to'] : '';
+        $to = $this->isOverride() ? explode(',', $this->override['to']) : [];
         if (! empty($to)) {
             $message->setTo($to);
         }
