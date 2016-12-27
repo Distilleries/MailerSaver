@@ -7,6 +7,7 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Events\Dispatcher;
 use Wpb\String_Blade_Compiler\Factory;
 use Distilleries\MailerSaver\Contracts\MailModelContract;
+use Illuminate\Contracts\Mail\Mailable as MailableContract;
 
 class Mail extends Mailer
 {
@@ -84,6 +85,10 @@ class Mail extends Mailer
      */
     public function send($view, array $data = [], $callback = null)
     {
+        if ($view instanceof MailableContract) {
+            return $view->send($this);
+        }
+
         // First we need to parse the view, which could either be a string or an array
         // containing both an HTML and plain text versions of the view which should
         // be used when sending an e-mail. We will extract both of them out here.
@@ -99,12 +104,13 @@ class Mail extends Mailer
 
         $data['message'] = $message = $this->createMessage();
 
-        $this->callMessageBuilder($callback, $message);
-
         // Once we have retrieved the view content for the e-mail we will set the body
         // of this message using the HTML type, which will provide a simple wrapper
         // to creating view based emails that are able to receive arrays of data.
         $this->addContent($message, $view, $plain, $raw, $data);
+
+        $this->callMessageBuilder($callback, $message);
+        
         $this->addSubject($message);
         $this->addCc($message);
         $this->addBcc($message);
