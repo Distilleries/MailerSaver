@@ -23,7 +23,7 @@ class MailTest extends TestCase
 
         $this->logsPath = base_path('storage/logs') . '/';
 
-        $this->emailTo = 'foo@example.com';
+        $this->emailTo = ['mail' => 'foo@example.com', 'name' => 'John Doe'];
 
         $this->app->singleton(MailModelContract::class, function ($app) {
             return new Email;
@@ -58,6 +58,7 @@ class MailTest extends TestCase
             'Mail' => Mail::class,
         ];
     }
+    
     public function testServiceProvider()
     {
         $service = $this->app->getProvider(MailerSaverServiceProvider::class);
@@ -79,7 +80,7 @@ class MailTest extends TestCase
         ]);
 
         $this->sendMail();
-        $this->assertTrue(str_contains($this->getLog(), 'To: ' . $this->emailTo));
+        $this->assertTrue(str_contains($this->getLog(), 'To: ' . $this->emailTo['name'] . ' <' . $this->emailTo['mail'] . '>'));
 
         $this->sendErrorMail();
         $this->assertTrue($this->getLog() === '');
@@ -113,7 +114,7 @@ class MailTest extends TestCase
         $this->clearLogs();
 
         Mail::send('mailersaver::default', ['subject' => $subject, 'body_mail' => $bodyMail], function ($message) use ($emailTo, $subject) {
-            $message->to($emailTo, 'John Doe')->subject($subject);
+            $message->to($emailTo['mail'], $emailTo['name'])->subject($subject);
         });
     }
 
@@ -125,7 +126,7 @@ class MailTest extends TestCase
         $this->clearLogs();
 
         Mail::send('test', array('data'), function ($message) use ($emailTo, $subject) {
-            $message->to($emailTo, 'John Doe')->subject($subject);
+            $message->to($emailTo['mail'], $emailTo['name'])->subject($subject);
         });
     }
 
