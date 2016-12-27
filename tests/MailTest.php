@@ -15,11 +15,15 @@ class MailTest extends TestCase
 {
     protected $logsPath;
 
+    protected $emailTo;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->logsPath = base_path('storage/logs') . '/';
+
+        $this->emailTo = 'foo@example.com';
 
         $this->app->singleton(MailModelContract::class, function ($app) {
             return new Email;
@@ -74,21 +78,11 @@ class MailTest extends TestCase
             ],
         ]);
 
-        $subject = 'subject';
-        $bodyMail = 'body content';
+        $this->sendMail();
+        $this->assertTrue(str_contains($this->getLog(), 'To: ' . $this->emailTo));
 
-        $this->clearLogs();
-        Mail::send('mailersaver::default', ['subject' => $subject, 'body_mail' => 'test'], function ($message) use ($subject) {
-            $message->to('foo@example.com', 'John Doe')->subject($subject);
-        });
-        $this->assertTrue(str_contains($this->getLog(), 'foo@example.com'));
-
-        /*
-        Mail::send('test', array('data'), function ($message) use ($subject) {
-            $message->to('foo@example.com', 'John Doe')->subject($subject);
-        });
-        $this->assertTrue(true);
-        */
+        $this->sendErrorMail();
+        $this->assertTrue($this->getLog() === '');
     }
 
     public function testWithOverride()
@@ -103,21 +97,36 @@ class MailTest extends TestCase
             ],
         ]);
 
-        $subject = 'subject';
-        $bodyMail = 'body content';
-
-        $this->clearLogs();
-        Mail::send('mailersaver::default', ['subject' => $subject, 'body_mail' => $bodyMail], function ($message) use ($subject) {
-            $message->to('foo@example.com', 'John Doe')->subject($subject);
-        });
+        $this->sendMail();
         $this->assertTrue(str_contains($this->getLog(), 'To: test@test'));
 
-        /*
-        Mail::send('test', array('data'), function ($message) use ($subject) {
-            $message->to('foo@example.com', 'John Doe')->subject($subject);
+        $this->sendErrorMail();
+        $this->assertTrue($this->getLog() === '');
+    }
+
+    private function sendMail()
+    {
+        $subject = 'subject';
+        $bodyMail = 'body content';
+        $emailTo = $this->emailTo;
+
+        $this->clearLogs();
+
+        Mail::send('mailersaver::default', ['subject' => $subject, 'body_mail' => $bodyMail], function ($message) use ($emailTo, $subject) {
+            $message->to($emailTo, 'John Doe')->subject($subject);
         });
-        $this->assertTrue(true);
-        */
+    }
+
+    private function sendErrorMail()
+    {
+        $subject = 'subject';
+        $emailTo = $this->emailTo;
+
+        $this->clearLogs();
+
+        Mail::send('test', array('data'), function ($message) use ($emailTo, $subject) {
+            $message->to($emailTo, 'John Doe')->subject($subject);
+        });
     }
 
     private function clearLogs()
