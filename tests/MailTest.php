@@ -105,6 +105,22 @@ class MailTest extends TestCase
         $this->assertTrue($this->getLog() === '');
     }
 
+    public function testWithOverrideMultiple()
+    {
+        $this->app['config']->set('mailersaver', [
+            'template' => 'mailersaver::default',
+            'override' => [
+                'enabled' => true,
+                'to' => 'test@test.org,default@mail.org',
+                'cc' => [],
+                'bcc' => [],
+            ],
+        ]);
+
+        $this->sendMail();
+        $this->assertTrue(str_contains($this->getLog(), 'To: test@test.org, default@mail.org'));
+    }
+
     private function sendMail()
     {
         $subject = 'subject';
@@ -125,7 +141,7 @@ class MailTest extends TestCase
 
         $this->clearLogs();
 
-        Mail::send('test', array('data'), function ($message) use ($emailTo, $subject) {
+        Mail::send('test', ['data'], function ($message) use ($emailTo, $subject) {
             $message->to($emailTo['mail'], $emailTo['name'])->subject($subject);
         });
     }

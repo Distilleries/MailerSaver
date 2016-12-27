@@ -1,6 +1,6 @@
 {
     "name": "distilleries/mailersaver",
-    "description": "Override helper Mailer from laravel to hock the sender",
+    "description": "Override helper Mailer from laravel to hook the sender",
     "license": "MIT",
     "authors": [
         {
