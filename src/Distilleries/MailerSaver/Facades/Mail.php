@@ -1,9 +1,11 @@
-<?php namespace Distilleries\MailerSaver\Facades;
+<?php
+
+namespace Distilleries\MailerSaver\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Mail extends Facade {
-
+class Mail extends Facade
+{
     /**
      * Get the registered name of the component.
      *
@@ -13,4 +15,4 @@ class Mail extends Facade {
     {
         return 'mailer';
     }
-} 
+}

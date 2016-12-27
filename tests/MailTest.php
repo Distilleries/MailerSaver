@@ -1,69 +1,61 @@
 <?php
 
-require_once(__DIR__.'/../src/models/Email.php');
+require_once __DIR__ . '/../src/models/Email.php';
 
+use Mockery;
+use App\Email;
+use Orchestra\Testbench\TestCase;
+use Distilleries\MailerSaver\Facades\Mail;
+use Wpb\String_Blade_Compiler\ViewServiceProvider;
+use Illuminate\Contracts\Console\Kernel as Artisan;
+use Distilleries\MailerSaver\MailerSaverServiceProvider;
+use Distilleries\MailerSaver\Contracts\MailModelContract;
 
-/**
- * Created by PhpStorm.
- * User: cross
- * Date: 2/25/2015
- * Time: 12:51 PM
- */
-
-use \Mockery as m;
-
-class MailTest extends \Orchestra\Testbench\TestCase {
-
-
-    public function setUp(){
-
+class MailTest extends TestCase
+{
+    public function setUp()
+    {
         parent::setUp();
 
-        $this->app->singleton('Distilleries\MailerSaver\Contracts\MailModelContract', function ($app)
-        {
-            return new \App\Email;
+        $this->app->singleton(MailModelContract::class, function ($app) {
+            return new Email;
         });
 
-        $this->app['Illuminate\Contracts\Console\Kernel']->call('migrate', [
-            '--database' => 'testbench',
+        $this->app[Artisan::class]->call('migrate', [
             '--realpath' => realpath(__DIR__.'/../src/database/migrations'),
         ]);
 
-        \App\Email::create(['action' => 'test', 'libelle' => 'test', 'body_type' => 'html', 'cc' => 'testcc@test', 'bcc' => 'testbcc@test', 'content' => 'test', 'status' => 0]);
-
-    }
-
-    protected function getEnvironmentSetUp($app)
-    {
-        $app['config']->set('database.default', 'testbench');
-        $app['config']->set('mail.driver', 'log');
-        $app['config']->set('database.connections.testbench', array(
-            'driver'   => 'sqlite',
-            'database' => ':memory:',
-            'prefix'   => '',
-        ));
+        Email::create([
+            'action' => 'test',
+            'libelle' => 'test',
+            'body_type' => 'html',
+            'cc' => 'testcc@test',
+            'bcc' => 'testbcc@test',
+            'content' => 'test',
+            'status' => 0,
+        ]);
     }
 
     protected function getPackageProviders($app)
     {
-        return array(
-            'Wpb\String_Blade_Compiler\ViewServiceProvider',
-            'Distilleries\MailerSaver\MailerSaverServiceProvider'
-        );
+        return [
+            ViewServiceProvider::class,
+            MailerSaverServiceProvider::class,
+        ];
     }
 
     protected function getPackageAliases($app)
     {
         return [
-            'Mail' => 'Distilleries\MailerSaver\Facades\Mail'
+            'Mail' => Mail::class,
         ];
     }
     public function testServiceProvider()
     {
-
-        $service = $this->app->getProvider('Distilleries\MailerSaver\MailerSaverServiceProvider');
+        $service = $this->app->getProvider(MailerSaverServiceProvider::class);
         $facades = $service->provides();
-        $this->assertTrue(['mailer', 'swift.mailer', 'swift.transport'] == $facades);
+
+        $this->assertTrue(['mailer', 'swift.mailer', 'swift.transport'] === $facades);
 
         $service->boot();
         $service->register();
@@ -71,53 +63,50 @@ class MailTest extends \Orchestra\Testbench\TestCase {
 
     public function testWithoutOverride()
     {
-        $this->app['config']->set('mailersaver.mail', [
-            'template' => 'mailersaver::admin.templates.mails.default',
+        $this->app['config']->set('mailersaver', [
+            'template' => 'mailersaver::default',
             'override' => [
                 'enabled' => false,
-                'to' => [],
-                'cc' => [],
-                'bcc' => []
-            ]
+            ],
         ]);
 
+        $subject = 'test';
+        $bodyMail = 'test';
 
-        \Mail::send('mailersaver::admin.templates.mails.default', ['subject' => 'test', 'body_mail' => 'test' ], function ($m) {
-            $m->to('foo@example.com', 'John Smith')->subject('Welcome!');
+        Mail::send('mailersaver::default', ['subject' => $subject, 'body_mail' => 'test'], function ($message) use ($subject) {
+            $message->to('foo@example.com', 'John Doe')->subject($subject);
         });
-
         $this->assertTrue(true);
 
-        \Mail::send('test', array('data'), function ($m) {
-            $m->to('foo@example.com', 'John Smith')->subject('Welcome!');
+        Mail::send('test', array('data'), function ($message) use ($subject) {
+            $message->to('foo@example.com', 'John Doe')->subject($subject);
         });
-
         $this->assertTrue(true);
-
-
     }
+
     public function testWithOverride()
     {
-        $this->app['config']->set('mailersaver.mail', [
-            'template' => 'mailersaver::admin.templates.mails.default',
+        $this->app['config']->set('mailersaver', [
+            'template' => 'mailersaver::default',
             'override' => [
                 'enabled' => true,
                 'to' => ['test@test'],
                 'cc' => [],
-                'bcc' => []
-            ]
+                'bcc' => [],
+            ],
         ]);
 
-        \Mail::send('mailersaver::admin.templates.mails.default', ['subject' => 'test', 'body_mail' => 'test' ], function ($m) {
-            $m->to('foo@example.com', 'John Smith')->subject('Welcome!');
-        });
+        $subject = 'test';
+        $bodyMail = 'test';
 
+        Mail::send('mailersaver::default', ['subject' => $subject, 'body_mail' => $bodyMail], function ($message) use ($subject) {
+            $message->to('foo@example.com', 'John Doe')->subject($subject);
+        });
         $this->assertTrue(true);
 
-        \Mail::send('test', array('data'), function ($m) {
-            $m->to('foo@example.com', 'John Smith')->subject('Welcome!');
+        Mail::send('test', array('data'), function ($message) use ($subject) {
+            $message->to('foo@example.com', 'John Doe')->subject($subject);
         });
-
         $this->assertTrue(true);
     }
 }
