@@ -61,12 +61,12 @@ class MailerSaverServiceProvider extends MailServiceProvider
             $this->setMailerDependencies($mailer, $app);
 
             $from = $app['config']['mail.from'];
-            if (is_array($from) and isset($from['address'])) {
+            if (is_array($from) && isset($from['address'])) {
                 $mailer->alwaysFrom($from['address'], $from['name']);
             }
 
             $to = $app['config']['mail.to'];
-            if (is_array($to) and isset($to['address'])) {
+            if (is_array($to) && isset($to['address'])) {
                 $mailer->alwaysTo($to['address'], $to['name']);
             }
 
