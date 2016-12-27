@@ -13,9 +13,13 @@ use Distilleries\MailerSaver\Contracts\MailModelContract;
 
 class MailTest extends TestCase
 {
+    protected $logsPath;
+
     public function setUp()
     {
         parent::setUp();
+
+        $this->logsPath = base_path('storage/logs') . '/';
 
         $this->app->singleton(MailModelContract::class, function ($app) {
             return new Email;
@@ -70,18 +74,21 @@ class MailTest extends TestCase
             ],
         ]);
 
-        $subject = 'test';
-        $bodyMail = 'test';
+        $subject = 'subject';
+        $bodyMail = 'body content';
 
+        $this->clearLogs();
         Mail::send('mailersaver::default', ['subject' => $subject, 'body_mail' => 'test'], function ($message) use ($subject) {
             $message->to('foo@example.com', 'John Doe')->subject($subject);
         });
-        $this->assertTrue(true);
+        $this->assertTrue(str_contains($this->getLog(), 'foo@example.com'));
 
+        /*
         Mail::send('test', array('data'), function ($message) use ($subject) {
             $message->to('foo@example.com', 'John Doe')->subject($subject);
         });
         $this->assertTrue(true);
+        */
     }
 
     public function testWithOverride()
@@ -96,18 +103,37 @@ class MailTest extends TestCase
             ],
         ]);
 
-        $subject = 'test';
-        $bodyMail = 'test';
+        $subject = 'subject';
+        $bodyMail = 'body content';
 
+        $this->clearLogs();
         Mail::send('mailersaver::default', ['subject' => $subject, 'body_mail' => $bodyMail], function ($message) use ($subject) {
             $message->to('foo@example.com', 'John Doe')->subject($subject);
         });
-        $this->assertTrue(true);
+        $this->assertTrue(str_contains($this->getLog(), 'To: test@test'));
 
+        /*
         Mail::send('test', array('data'), function ($message) use ($subject) {
             $message->to('foo@example.com', 'John Doe')->subject($subject);
         });
         $this->assertTrue(true);
+        */
+    }
+
+    private function clearLogs()
+    {
+        foreach (glob($this->logsPath . 'laravel-*') as $path) {
+            unlink($path);
+        }
+    }
+
+    private function getLog()
+    {
+        foreach (glob($this->logsPath . 'laravel-*') as $path) {
+            return file_get_contents($path);
+        }
+
+        return '';
     }
 }
  
