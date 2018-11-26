@@ -45,29 +45,27 @@ class MailerSaverServiceProvider extends MailServiceProvider
         );
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    protected function registerIlluminateMailer()
     {
         $this->app->singleton('mailer', function ($app) {
-            $this->registerSwiftMailer();
+            $config = $app->make('config')->get('mail');
 
-            $model = $app->make(MailModelContract::class);
-            $mailer = new Mail($model, $app['view'], $app['swift.mailer'], $app['events']);
+            // Once we have create the mailer instance, we will set a container instance
+            // on the mailer. This allows us to resolve mailer classes via containers
+            // for maximum testability on said classes instead of passing Closures.
+            $mailer = new Mail(
+                $app->make(MailModelContract::class), $app['view'], $app['swift.mailer'], $app['events']
+            );
 
-            $this->setMailerDependencies($mailer, $app);
-
-            $from = $app['config']['mail.from'];
-            if (is_array($from) && isset($from['address'])) {
-                $mailer->alwaysFrom($from['address'], $from['name']);
+            if ($app->bound('queue')) {
+                $mailer->setQueue($app['queue']);
             }
 
-            $to = $app['config']['mail.to'];
-            if (is_array($to) && isset($to['address'])) {
-                $mailer->alwaysTo($to['address'], $to['name']);
+            // Next we will set all of the global addresses on this mailer, which allows
+            // for easy unification of all "from" addresses as well as easy debugging
+            // of sent messages since they get be sent into a single email address.
+            foreach (['from', 'reply_to', 'to'] as $type) {
+                $this->setGlobalAddress($mailer, $config, $type);
             }
 
             return $mailer;
