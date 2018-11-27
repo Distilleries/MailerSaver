@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/../src/models/Email.php';
 
-use Mockery;
 use App\Email;
+use Illuminate\Mail\Markdown;
 use Orchestra\Testbench\TestCase;
 use Distilleries\MailerSaver\Facades\Mail;
 use Wpb\String_Blade_Compiler\ViewServiceProvider;
@@ -29,8 +29,13 @@ class MailTest extends TestCase
             return new Email;
         });
 
-        $this->app[Artisan::class]->call('migrate', [
-            '--realpath' => realpath(__DIR__.'/../src/database/migrations'),
+        $this->loadLaravelMigrations(['--database' => 'testing']);
+
+        // call migrations specific to our tests, e.g. to seed the db
+        // the path option should be an absolute path.
+        $this->loadMigrationsFrom([
+            '--database' => 'testing',
+            '--path' => realpath(__DIR__.'/../src/database/migrations'),
         ]);
 
         Email::create([
@@ -42,6 +47,18 @@ class MailTest extends TestCase
             'content' => 'test',
             'status' => 0,
         ]);
+    }
+
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('database.default', 'testing');
     }
 
     protected function getPackageProviders($app)
@@ -64,7 +81,7 @@ class MailTest extends TestCase
         $service = $this->app->getProvider(MailerSaverServiceProvider::class);
         $facades = $service->provides();
 
-        $this->assertTrue(['mailer', 'swift.mailer', 'swift.transport'] === $facades);
+        $this->assertTrue(['mailer', 'swift.mailer', 'swift.transport', Markdown::class,] === $facades);
 
         $service->boot();
         $service->register();
