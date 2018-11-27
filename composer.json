@@ -21,7 +21,7 @@
         "illuminate/view": "5.7.*",
         "illuminate/mail": "5.7.*",
         "illuminate/filesystem": "5.7.*",
-        "wpb/string-blade-compiler": "dev-laravel-5.7"
+        "wpb/string-blade-compiler": "dev-laravel-5.7#d9cc177760727fa7ac4df0a322cc3e28c0c074c7"
     },
 
     "autoload": {
