@@ -11,7 +11,8 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/mikerogne/StringBladeCompiler"
+            "url": "https://github.com/mikerogne/StringBladeCompiler",
+            "no-api": true
         }
     ],
     "require": {
